@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tổng Kho Gia Dụng Phương An</title>
+
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- HEADER -->
+  <header class="bg-green-700 text-white p-5 shadow-lg">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-bold">Tổng Kho Gia Dụng Phương An</h1>
+
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Tìm sản phẩm..."
+        class="px-4 py-2 rounded-lg text-black w-64"
+      >
+    </div>
+  </header>
+
+  <!-- BANNER -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto p-6">
+      <div class="bg-green-600 rounded-2xl p-10 text-white">
+        <h2 class="text-4xl font-bold mb-4">
+          Đồ Gia Dụng Giá Tốt
+        </h2>
+
+        <p class="text-lg">
+          Hàng chất lượng - Giá kho - Giao nhanh
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DANH MỤC -->
+  <section class="max-w-7xl mx-auto p-6">
+
+    <h2 class="text-2xl font-bold mb-5">
+      Danh mục sản phẩm
+    </h2>
+
+    <div class="flex gap-4 flex-wrap mb-10">
+
+  <button onclick="filterProducts('all')" class="bg-green-600 text-white px-5 py-2 rounded-full">
+    Tất cả
+  </button>
+
+  <button onclick="filterProducts('inochi')" class="bg-white px-5 py-2 rounded-full shadow">
+    Inochi
+  </button>
+
+  <button onclick="filterProducts('bat-dia')" class="bg-white px-5 py-2 rounded-full shadow">
+    Bát đĩa
+  </button>
+
+  <button onclick="filterProducts('hoa-my-pham')" class="bg-white px-5 py-2 rounded-full shadow">
+    Hoá mỹ phẩm
+  </button>
+
+  <button onclick="filterProducts('gia-dung-tien-ich')" class="bg-white px-5 py-2 rounded-full shadow">
+    Gia dụng tiện ích
+  </button>
+
+  <button onclick="filterProducts('topgia')" class="bg-white px-5 py-2 rounded-full shadow">
+    Topgia
+  </button>
+
+  <button onclick="filterProducts('viet-nhat')" class="bg-white px-5 py-2 rounded-full shadow">
+    Việt Nhật
+  </button>
+
+  <button onclick="filterProducts('gumi')" class="bg-white px-5 py-2 rounded-full shadow">
+    Gumi
+  </button>
+
+</div>
+
+    <!-- SẢN PHẨM -->
+    <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+
+    </div>
+
+  </section>
+
+<script>
+
+const products = [
+  {
+    name: "Chảo Inochi 20cm",
+    price: "365.000đ",
+    image: "images/1.png",
+    category: "inochi"
+  },
+  {
+    name: "Chảo Inochi 24cm",
+    price: "420.000đ",
+    image: "images/1.png",
+    category: "inochi"
+  },
+  {
+    name: "Chảo Inochi 28cm",
+    price: "480.000đ",
+    image: "images/1.png",
+    category: "inochi"
+  },
+  {
+    name: "Chảo Inox 20cm",
+    price: "275.000đ",
+    image: "images/2.4.jpg",
+    category: "inochi"
+  },
+    {
+        name: "Bộ bát đĩa hoa vàng",
+        price: "297.000đ",
+        image: "images/hoavang.jpg",
+        category: "bat-dia"
+    },
+    {
+        name: "Bộ bát đĩa vân mây",
+        price: "350.000đ",
+        image: "images/vanmay.jpg",
+        category: "bat-dia"
+    }
+
+
+
+];
+
+function renderProducts(list){
+  const box = document.getElementById("product-list");
+  box.innerHTML = "";
+
+  list.forEach(p => {
+    box.innerHTML += `
+      <div class="bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden">
+
+        <img src="${p.image}" class="w-full h-60 object-cover">
+
+        <div class="p-4">
+
+          <h3 class="text-xl font-semibold mb-2">
+            ${p.name}
+          </h3>
+
+          <div class="text-red-600 text-2xl font-bold">
+            ${p.price}
+          </div>
+
+        </div>
+
+      </div>
+    `;
+  });
+}
+
+function filterProducts(category){
+
+  if(category === "all"){
+    renderProducts(products);
+  } else {
+    const filtered = products.filter(p => p.category === category);
+    renderProducts(filtered);
+  }
+}
+
+// load lần đầu
+renderProducts(products);
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", function () {
+  const keyword = this.value.toLowerCase();
+
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(keyword)
+  );
+
+  renderProducts(filtered);
+});
+</script>
+</body>
+</html>
