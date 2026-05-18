@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tổng Kho Gia Dụng Phương An</title>
+
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    .card:hover {
+      transform: translateY(-5px);
+      transition: 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      transition: 0.2s;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- HEADER -->
+  <header class="bg-green-700 text-white p-5 shadow-lg">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-bold">Tổng Kho Gia Dụng Phương An</h1>
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Tìm sản phẩm..."
+        class="px-4 py-2 rounded-lg text-black w-64"
+      >
+    </div>
+  </header>
+
+  <!-- BANNER CHÍNH -->
+  <section class="bg-green-600 rounded-2xl p-10 text-white max-w-7xl mx-auto m-6">
+    <h2 class="text-4xl font-bold mb-4">Đồ Gia Dụng Giá Tốt</h2>
+    <p class="text-lg">Hàng chất lượng - Giá kho - Giao nhanh</p>
+  </section>
+
+  <!-- BANNER KHUYẾN MẠI + MUA SỐ LƯỢNG LỚN -->
+  <section class="max-w-7xl mx-auto p-6">
+    <div class="bg-gradient-to-r from-red-500 to-yellow-400 text-white p-8 rounded-2xl shadow-lg grid md:grid-cols-2 gap-6">
+
+      <!-- Cột 1: Chương trình khuyến mại -->
+      <div>
+        <h2 class="text-3xl font-bold mb-3">🎉 CHƯƠNG TRÌNH KHUYẾN MẠI</h2>
+        <p class="text-lg mb-2">🔥 Giảm giá sốc cho đồ gia dụng - Ưu đãi khai trương</p>
+        <p class="text-lg">🚚 Freeship đơn bán kính 2km</p>
+      </div>
+
+      <!-- Cột 2: Mua số lượng lớn -->
+      <div class="bg-white text-black p-6 rounded-2xl shadow-md border-l-8 border-green-600">
+        <h2 class="text-2xl font-bold mb-2">🏪 Mua số lượng lớn - Giá sỉ</h2>
+        <p class="text-gray-600 mb-4">
+          Khách sỉ, đại lý, cửa hàng vui lòng liên hệ để nhận giá tốt nhất
+        </p>
+        <a href="https://zalo.me/0365459283"
+           target="_blank"
+           class="bg-green-600 text-white px-6 py-3 rounded-full inline-block font-bold hover:bg-green-700">
+          💬 Liên hệ Zalo: 0365 459 283
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DANH MỤC SẢN PHẨM -->
+  <section class="max-w-7xl mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-5">Danh mục sản phẩm</h2>
+
+    <div class="flex gap-4 flex-wrap mb-10">
+      <button onclick="filterProducts('all')" class="bg-green-600 text-white px-5 py-2 rounded-full">Tất cả</button>
+      <button onclick="filterProducts('inochi')" class="bg-white px-5 py-2 rounded-full shadow">Inochi</button>
+      <button onclick="filterProducts('bat-dia')" class="bg-white px-5 py-2 rounded-full shadow">Bát đĩa</button>
+      <button onclick="filterProducts('hoa-my-pham')" class="bg-white px-5 py-2 rounded-full shadow">Hoá mỹ phẩm</button>
+      <button onclick="filterProducts('gia-dung-tien-ich')" class="bg-white px-5 py-2 rounded-full shadow">Gia dụng tiện ích</button>
+      <button onclick="filterProducts('topgia')" class="bg-white px-5 py-2 rounded-full shadow">Topgia</button>
+      <button onclick="filterProducts('viet-nhat')" class="bg-white px-5 py-2 rounded-full shadow">Việt Nhật</button>
+      <button onclick="filterProducts('gumi')" class="bg-white px-5 py-2 rounded-full shadow">Gumi</button>
+    </div>
+
+    <!-- DANH SÁCH SẢN PHẨM -->
+    <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+  </section>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    const products = [
+      // INOCHI
+      { name: "Bộ thuỷ tinh HCN Nikko kèm túi giữ nhiệt Yoshino", price: "275.000đ", image: "images/i1.jpg", category: "inochi" },
+      { name: "Bộ thuỷ tinh tròn Nikko kèm túi giữ nhiệt Yoshino", price: "225.000đ", image: "images/i2.jpg", category: "inochi" },
+      { name: "Lồng bàn HCN Yoko", price: "53.000đ", image: "images/i3.jpg", category: "inochi" },
+      { name: "Inochi kệ treo bàn chải Nachi 4 cốc", price: "218.000đ", image: "images/i4.jpg", category: "inochi" },
+      { name: "Môi xới cơm đế đứng sendai", price: "10.000đ", image: "images/i5.png", category: "inochi" },
+      { name: "Khay đá thanh Kari 5 viên", price: "34.000đ", image: "images/i9.jpg", category: "inochi" },
+      { name: "Sọt rác tròn Hiro 15L", price: "62.000đ", image: "images/i8.jpg", category: "inochi" },
+      { name: "Sọt rác tròn Hiro 10L", price: "45.000đ", image: "images/i8.jpg", category: "inochi" },
+      { name: "Sọt rác tròn Hiro 5L", price: "29.000đ", image: "images/i8.jpg", category: "inochi" },
+      { name: "Chai đựng dầu oliu, dấm 180ml", price: "34.000đ", image: "images/i20.jpg", category: "inochi" },
+      { name: "Bộ 2 thìa ăn dặm Amori Inochi", price: "16.000đ", image: "images/i11.jpg", category: "inochi" },
+      { name: "Bát tô amori 850ml Inochi", price: "15.000đ", image: "images/i12.jpg", category: "inochi" },
+      { name: "Bát nhỏ amori 415ml Inochi", price: "10.000đ", image: "images/i13.jpg", category: "inochi" },
+      { name: "Chảo xào vân đá Omi Grey 28cm", price: "308.000đ", image: "images/i14.jpg", category: "inochi" },
+      { name: "Chảo xào vân đá Omi Grey 26cm", price: "274.000đ", image: "images/i14.jpg", category: "inochi" },
+      { name: "Ấm đun siêu tốc Inochi", price: "148.000đ", image: "images/i19.jpg", category: "inochi" },
+      { name: "Chảo Inox nguyên khối Omi Gourmet 28cm", price: "410.000đ", image: "images/i15.jpg", category: "inochi" },
+      { name: "Chảo Inox nguyên khối Omi Gourmet 24cm", price: "345.000đ", image: "images/i15.jpg", category: "inochi" },
+      { name: "Chảo Inox nguyên khối Omi Gourmet 20cm", price: "275.000đ", image: "images/i15.jpg", category: "inochi" },
+      { name: "Chảo inox chống dính nguyên khối Omi essential 28cm", price: "480.000đ", image: "images/1.png", category: "inochi" },
+      { name: "Chảo inox chống dính nguyên khối Omi essential 24CM", price: "420.000đ", image: "images/1.png", category: "inochi" },
+      { name: "Chảo inox chống dính nguyên khối Omi essential 20CM", price: "365.000đ", image: "images/1.png", category: "inochi" },
+      { name: "Hộp thủy tinh HCN Nikko 1520ml 3 ngăn", price: "129.000đ", image: "images/i16.jpg", category: "inochi" },
+      { name: "Hộp nhựa đựng thực phẩm chữ nhật Inochi Hokkaido 2500ml", price: "38.000đ", image: "images/i17.jpg", category: "inochi" },
+      { name: "Hộp nhựa đựng thực phẩm chữ nhật Inochi Hokkaido 2000ml", price: "34.000đ", image: "images/i17.jpg", category: "inochi" },
+      { name: "Hộp nhựa đựng thực phẩm chữ nhật Inochi Hokkaido 1500ml", price: "30.000đ", image: "images/i17.jpg", category: "inochi" },
+      { name: "Hộp nhựa đựng thực phẩm chữ nhật Inochi Hokkaido 1000ml", price: "25.000đ", image: "images/i17.jpg", category: "inochi" },
+      { name: "Hộp nhựa đựng thực phẩm chữ nhật Inochi Hokkaido 750ml", price: "20.000đ", image: "images/i17.jpg", category: "inochi" },
+      { name: "Hộp nhựa đựng thực phẩm chữ nhật Inochi Hokkaido 500ml", price: "15.000đ", image: "images/i17.jpg", category: "inochi" },
+      { name: "Bộ 6 hộp thực phẩm Inochi Hokkaido", price: "275.000đ", image: "images/i18.jpg", category: "inochi" },
+      { name: "Ca đong Yoko 200ml", price: "12.000đ", image: "images/i21.png", category: "inochi" },
+      { name: "Hộp đựng TP khô Hokaido 2100ml", price: "83.000đ", image: "images/i22.png", category: "inochi" },
+      { name: "Hộp đựng TP khô Hokkaido 1400ml", price: "70.000đ", image: "images/i22.png", category: "inochi" },
+      { name: "Hộp đựng TP khô Hokkaido 1000ml", price: "65.000đ", image: "images/i22.png", category: "inochi" },
+      { name: "Hộp đựng TP khô Hokkaido 500ml", price: "60.000đ", image: "images/i22.png", category: "inochi" },
+      { name: "Hộp thuỷ tinh tròn Nikko 950ml", price: "70.000đ", image: "images/i23.jpg", category: "inochi" },
+      { name: "Hộp thuỷ tinh tròn Nikko 620ml", price: "57.000đ", image: "images/i23.jpg", category: "inochi" },
+      { name: "Hộp thuỷ tinh HCN Nikko 640ml", price: "60.000đ", image: "images/i24.png", category: "inochi" },
+      { name: "Hộp thuỷ tinh HCN Nikko 1040ml", price: "81.000đ", image: "images/i24.png", category: "inochi" },
+      { name: "Hộp thuỷ tinh Nikko vuông 800ml", price: "63.000đ", image: "images/i25.jpg", category: "inochi" },
+      { name: "Hộp thủy tinh vuông Nikko 520ml", price: "52.000đ", image: "images/i25.jpg", category: "inochi" },
+      { name: "Thùng gạo sendai Inochi 12kg", price: "114.000đ", image: "images/i26.png", category: "inochi" },
+      { name: "Màng bọc TP Shinsen 30cm*40000cm có dao gạt", price: "180.000đ", image: "images/i27.jpg", category: "inochi" },
+      { name: "Hộp đưng hành tỏi Hokkaido mẫu vuông", price: "26.000đ", image: "images/i28.png", category: "inochi" },
+      { name: "Kệ treo bàn chải Nachi 2 cốc", price: "75.000đ", image: "images/i29.jpg", category: "inochi" },
+      { name: "Thớt chống trượt cao cấp Yoko", price: "83.000đ", image: "images/i30.jpg", category: "inochi" },
+      { name: "Inochi Màng bọc TP Shinsen 30cm*10m", price: "65.000đ", image: "images/i27.jpg", category: "inochi" },
+      { name: "Giỏ xách quai bên Tokyo", price: "95.000đ", image: "images/i7.jpg", category: "inochi" },
+      { name: "Kệ gầm bếp tokyo", price: "167.000đ", image: "images/i6.jpg", category: "inochi" },
+      { name: "Hộp thủy tinh HCN Nikko 2 ngăn 1520ml", price: "117.000đ", image: "images/i31.jpg", category: "inochi" },
+
+      // BÁT ĐĨA
+      { name: "Bộ bát đĩa hoa vàng", price: "297.000đ", image: "images2/hoavang.jpg", category: "bat-dia" },
+      { name: "Bộ bát đĩa vân mây", price: "350.000đ", image: "images2/vanmay.jpg", category: "bat-dia" },
+
+      // HOÁ MỸ PHẨM
+      { name: "Nước giặt Dnee Thái túi 1300ml", price: "96.000đ", image: "images2/h69.jpg", category: "hoa-my-pham" },
+      { name: "Nước rửa bát Suzy", price: "35.000đ", image: "images2/h70.png", category: "hoa-my-pham" },
+      { name: "Xả thái Dove", price: "75.000đ", image: "images2/h71.jpg", category: "hoa-my-pham" },
+      { name: "Gội thái Dove", price: "79.000đ", image: "images2/h71.jpg", category: "hoa-my-pham" },
+      { name: "Combo 3 túi nước rửa bát Thái 1L", price: "55.000đ", image: "images/1.jpg", category: "hoa-my-pham" },
+      { name: "VIM xịt bọt tuyết chai 500ml", price: "44.000đ", image: "images/h2.jpg", category: "hoa-my-pham" },
+      { name: "Can lau sàn Sunlight quế cam 3.6L", price: "108.000đ", image: "images/h3.jpg", category: "hoa-my-pham" },
+      { name: "Can lau sàn sunlight 1L", price: "37.000đ", image: "images/h4.jpg", category: "hoa-my-pham" },
+      { name: "Túi nước giặt Dnee Thái tím 1300ml", price: "90.000đ", image: "images/h5.jpg", category: "hoa-my-pham" },
+      { name: "Sáp thơm Ambi", price: "52.000đ", image: "images/h7.jpg", category: "hoa-my-pham" },
+      { name: "Bột thông cống T&T", price: "15.000đ", image: "images/h8.jpg", category: "hoa-my-pham" },
+      { name: "Nước lau sàn SWAT 1L", price: "28.000đ", image: "images/h9.jpg", category: "hoa-my-pham" },
+      { name: "Tẩy vệ sinh VIM 880ml", price: "35.000đ", image: "images/h10.png", category: "hoa-my-pham" },
+      { name: "Tẩy toilet OKAY hồng 960ml", price: "33.000đ", image: "images/h11.jpg", category: "hoa-my-pham" },
+      { name: "Nước rửa tay Dr Clean", price: "35.000đ", image: "images/h12.jpg", category: "hoa-my-pham" },
+      { name: "Nước tẩy Trang Simple 400ml", price: "110.000đ", image: "images/h13.jpeg", category: "hoa-my-pham" },
+      { name: "Tẩy Trang Bioderma xanh 500ml", price: "299.000đ", image: "images/h14.jpg", category: "hoa-my-pham" },
+      { name: "Tẩy Trang Bioderma hông 500ml", price: "280.000đ", image: "images/h15.jpg", category: "hoa-my-pham" },
+      { name: "Sữa tắm cá ngựa vòi 600ml", price: "138.000đ", image: "images/h16.jpeg", category: "hoa-my-pham" },
+      { name: "Dung dịch vệ sinh Intima", price: "65.000đ", image: "images/h17.jpg", category: "hoa-my-pham" },
+      { name: "Sữa tắm Lux 570g", price: "62.000đ", image: "images/h18.jpg", category: "hoa-my-pham" },
+      { name: "Sữa tắm Dnee Thái 500ml", price: "64.000đ", image: "images/h19.jpg", category: "hoa-my-pham" },
+      { name: "Chai xịt vải Downy 370ml", price: "74.000đ", image: "images/h20.jpg", category: "hoa-my-pham" },
+      { name: "Dầu gội Enchanteur charming 650g", price: "106.000đ", image: "images/h21.jpg", category: "hoa-my-pham" },
+      { name: "Sữa tắm Enchanteur charming 900g", price: "140.000đ", image: "images/h22.png", category: "hoa-my-pham" },
+      { name: "Dầu gội Clear bạc hà 370g", price: "69.000đ", image: "images/h23.jpg", category: "hoa-my-pham" },
+      { name: "Chai rửa tay Lifebouy 450ml", price: "72.000đ", image: "images/h24.png", category: "hoa-my-pham" },
+      { name: "Túi sữa tắm Lifebouy 800ml", price: "135.000đ", image: "images/h25.jpg", category: "hoa-my-pham" },
+      { name: "Kem đánh răng PS bé ngoan 35g", price: "8.000đ", image: "images/h26.jpg", category: "hoa-my-pham" },
+      { name: "Bông tai Bonus hộp 200PCS", price: "19.000đ", image: "images/h27.png", category: "hoa-my-pham" },
+      { name: "DG Nguyên xuân đỏ 350ml", price: "112.000đ", image: "images/h28.png", category: "hoa-my-pham" },
+      { name: "DG Nguyên xuân vàng 350ml", price: "138.000đ", image: "images/h29.jpg", category: "hoa-my-pham" },
+      { name: "DG Nguyên Xuân xanh lá 350ml", price: "117.000đ", image: "images/h30.jpg", category: "hoa-my-pham" },
+      { name: "Dầu xả Nguyên Xuân", price: "72.000đ", image: "images/h31.jpg", category: "hoa-my-pham" },
+      { name: "KDR 93 Hàn quốc", price: "42.000đ", image: "images/h32.png", category: "hoa-my-pham" },
+      { name: "Sữa tắm E100 trắng 800ml", price: "79.000đ", image: "images/h33.jpg", category: "hoa-my-pham" },
+      { name: "Sữa tắm dê Goat Milk Thái Lan 1150ml", price: "97.000đ", image: "images/h34.jpg", category: "hoa-my-pham" },
+      { name: "DG Head shoulders 700ml Thái Lan", price: "138.000đ", image: "images/h35.jpg", category: "hoa-my-pham" },
+      { name: "Lactacyd DDVS phụ nữ ngăn mùi 250ml", price: "78.000đ", image: "images/h36.jpg", category: "hoa-my-pham" },
+      { name: "Gội nhuộm đen Thái Dương", price: "107.000đ", image: "images/h37.jpg", category: "hoa-my-pham" },
+      { name: "DG Thái dương 500ml", price: "143.000đ", image: "images/h38.jpg", category: "hoa-my-pham" },
+      { name: "Gội xả Treseme", price: "71.000đ", image: "images/h39.jpg", category: "hoa-my-pham" },
+      { name: "Gội Romano GenZ+ quà tặng", price: "155.000đ", image: "images/h40.png", category: "hoa-my-pham" },
+      { name: "Dầu gội Romano 650g", price: "115.000đ", image: "images/h41.jpg", category: "hoa-my-pham" },
+      { name: "TDC body quế hổi Bilena Nga", price: "69.000đ", image: "images/h42.jpg", category: "hoa-my-pham" },
+      { name: "SRM Acnes 100g", price: "58.000đ", image: "images/h43.jpg", category: "hoa-my-pham" },
+      { name: "SRM XMen", price: "65.000đ", image: "images/h44.jpg", category: "hoa-my-pham" },
+      { name: "SRM NIVIA Deep", price: "67.000đ", image: "images/h45.jpg", category: "hoa-my-pham" },
+      { name: "SRM Romano 100g", price: "52.000đ", image: "images/h46.jpg", category: "hoa-my-pham" },
+      { name: "SRM Senka xanh dương/ trắng", price: "75.000đ", image: "images/h47.jpg", category: "hoa-my-pham" },
+      { name: "TDC mặt Cocoon 150ml", price: "105.000đ", image: "images/h48.jpg", category: "hoa-my-pham" },
+      { name: "Nước tẩy trang Senka", price: "70.000đ", image: "images/h49.png", category: "hoa-my-pham" },
+      { name: "Kem đánh răng Ngọc Châu 170g", price: "45.000đ", image: "images/h50.jpg", category: "hoa-my-pham" },
+      { name: "Kem đánh răng Closeup", price: "35.000đ", image: "images/h51.jpg", category: "hoa-my-pham" },
+      { name: "Kem đánh răng PS", price: "36.000đ", image: "images/h52.jpg", category: "hoa-my-pham" },
+      { name: "DG Clear thảo dược chai 630g", price: "168.000đ", image: "images/h53.jpg", category: "hoa-my-pham" },
+      { name: "Sữa tắm lifebouy 800ml", price: "168.000đ", image: "images/h54.jpg", category: "hoa-my-pham" },
+      { name: "Sáp thơm Glade", price: "48.000đ", image: "images/h55.jpg", category: "hoa-my-pham" },
+      { name: "Can nước rửa bát Thái ", price: "105.000đ", image: "images/h56.jpg", category: "hoa-my-pham" },
+      { name: "Nước rửa bát Thái chai 750ml", price: "32.000đ", image: "images/h57.jpg", category: "hoa-my-pham" },
+      { name: "Xịt đa năng Sunlight hương chanh xả", price: "33.000đ", image: "images/h58.png", category: "hoa-my-pham" },
+      { name: "Nước xả Hygiene tím túi 2L", price: "125.000đ", image: "images/h59.png", category: "hoa-my-pham" },
+      { name: "Nước giặt Hygiene 1L8", price: "115.000đ", image: "images/h60.png", category: "hoa-my-pham" },
+      { name: "Nước Xả Downy 3L tím/đỏ", price: "190.000đ", image: "images/h61.jpg", category: "hoa-my-pham" },
+      { name: "Nước Xả comfort trắng 1.7L", price: "129.000đ", image: "images/h62.jpg", category: "hoa-my-pham" },
+      { name: "Baking soda", price: "33.000đ", image: "images/h63.jpg", category: "hoa-my-pham" },
+      { name: "Tẩy trắng/ màu Hygiene 250ml", price: "15.000đ", image: "images/h64.jpg", category: "hoa-my-pham" },
+      { name: "Nước giặt omo tím/ đỏ	", price: "185.000đ", image: "images/h65.png", category: "hoa-my-pham" },
+      { name: "Nước giặt Max kleen", price: "145.000đ", image: "images/h66.jpg", category: "hoa-my-pham" },
+      { name: "Túi thơm Hygiene Thái", price: "24.000đ", image: "images/h67.jpg", category: "hoa-my-pham" },
+      { name: "Nước giặt Suft", price: "98.000đ", image: "images/h68.jpg", category: "hoa-my-pham" },
+
+      // TOPGIA
+      { name: "Chai nước rửa chén Topgia", price: "38.000đ", image: "images2/t11.png", category: "topgia" },
+      { name: "Túi nước giặt 2L hương hoa hồng/Lavender", price: "48.000đ", image: "images2/t2.png", category: "topgia" },
+      { name: "Can nước giặt 2L hương hoa hồng/Lavender", price: "63.000đ", image: "images2/t3.png", category: "topgia" },
+      { name: "Túi nước rửa chén Topgia", price: "55.000đ", image: "images2/t4.png", category: "topgia" },
+      { name: "Viên giặt hoa hồng/lavender Topgia", price: "66.000đ", image: "images2/t5.jpg", category: "topgia" },
+      { name: "Bột giặt Topgia 2.2kg", price: "65.000đ", image: "images2/t6.png", category: "topgia" },
+      { name: "Bột giặt Topgia 5kg", price: "145.000đ", image: "images2/t6.png", category: "topgia" },
+      { name: "Can nước giặt Topgia 4.5L 2 vòi", price: "167.000đ", image: "images2/t7.jpg", category: "topgia" },
+      { name: "Nước giặt đồ lót Topgia 520ml", price: "29.000đ", image: "images2/t8.jpg", category: "topgia" },
+      { name: "Xịt tẩy đa năng Topgia", price: "27.000đ", image: "images2/t9.jpeg", category: "topgia" },
+      { name: "Tẩy lồng giặt Topgia", price: "38.000đ", image: "images2/t10.jpg", category: "topgia" },
+      { name: "Chai nước rửa rau củ Topgia", price: "52.000đ", image: "images2/t1.png", category: "topgia" },
+      { name: "Tẩy bồn cầu Topgia tím/hồng", price: "20.000đ", image: "images2/t12.jpg", category: "topgia" },
+      { name: "Tẩy bồn cầu hương thông Topgia", price: "19.000đ", image: "images2/t13.jpg", category: "topgia" },
+      { name: "Khăn giấy mini bỏ túi Giagia", price: "14.000đ", image: "images2/t14.jpg", category: "topgia" },
+      { name: "Giấy vệ sinh đa sắc dạng rút T8", price: "27.000đ", image: "images2/t15.jpg", category: "topgia" },
+      { name: "Giấy ăn đa sắc Topgia bịch 10", price: "39.000đ", image: "images2/t16.jpg", category: "topgia" },
+      { name: "Giấy ăn sương mai gói lẻ", price: "8500đ", image: "images2/t17.png", category: "topgia" },
+      { name: "Khăn ướt Ban mai lẻ", price: "15.000đ", image: "images2/t18.jpg", category: "topgia" },
+      { name: "Màng bọc thực phẩm Topgia 300c", price: "33.000đ", image: "images2/t19.png", category: "topgia" },
+      { name: "Khăn đa năng topgia", price: "28.000đ", image: "images2/t20.jpg", category: "topgia" },
+      { name: "Hộp khẩu trang trắng 100c Topgia", price: "34.000đ", image: "images2/t21.jpg", category: "topgia" },
+      { name: "Hộp khẩu trang đen 100c Topgia", price: "38.000đ", image: "images2/t22.jpg", category: "topgia" },
+
+      // GUMI
+      { name: "Hộp khẩu trang Gumi 5D 200c", price: "97.000đ", image: "images2/g1.jpg", category: "gumi" },
+      { name: "Chỉ nha khoa Gumi phiên bản cao cấp", price: "13.000đ", image: "images2/g2.jpg", category: "gumi" },
+      { name: "Khăn tắm bông cao cấp Gumi", price: "88.000đ", image: "images2/g3.png", category: "gumi" },
+      { name: "Túi nước giặt trẻ em Gumikid 1400ml", price: "71.000đ", image: "images2/g4.jpg", category: "gumi" },
+      { name: "Khăn ướt Gumi", price: "17.000đ", image: "images2/g5.jpg", category: "gumi" },
+      { name: "Túi đựng thực phẩm sinh học Gumi cao cấp 20cmx30cm", price: "39.000đ", image: "images2/g6.jpg", category: "gumi" },
+      { name: "Hộp 30c túi zip thực phẩm 1L Gumi", price: "29.000đ", image: "images2/g7.jpg", category: "gumi" },
+      { name: "Găng tay thực phẩm TPE", price: "15.000đ", image: "images2/g8.jpeg", category: "gumi" },
+      { name: "Bàn chải người lớn Gumi", price: "23.000đ", image: "images2/g9.jpg", category: "gumi" },
+      { name: "Bàn chải trẻ em Gumi", price: "12.000đ", image: "images2/g10.jpg", category: "gumi" },
+      { name: "Túi 5 viên thả bồn cầu Gumi", price: "27.000đ", image: "images2/g11.jpeg", category: "gumi" },
+      { name: "Rửa kính ô tô Gumi 200ml", price: "29.000đ", image: "images2/g12.jpg", category: "gumi" },
+      { name: "Giấy vệ sinh cuộn 4 lớp bịch 12 cuộn Gumi cao cấp", price: "99.000đ", image: "images2/g13.jpg", category: "gumi" },
+      { name: "Giấy vệ sinh tròn công nghiệp Gumi", price: "38.000đ", image: "images2/g14.jpg", category: "gumi" },
+      { name: "Khăn ướt bao sái Gumi", price: "18.000đ", image: "images2/g15.jpg", category: "gumi" },
+
+      
+
+
+
+
+
+
+
+    ];
+
+    function renderProducts(list){
+      const box = document.getElementById("product-list");
+      box.innerHTML = "";
+      list.forEach(p => {
+        box.innerHTML += `
+          <div class="card bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden">
+            <img src="${p.image}" class="w-full h-60 object-cover">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold mb-2">${p.name}</h3>
+              <div class="text-red-600 text-2xl font-bold">${p.price}</div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function filterProducts(category){
+      if(category === "all"){
+        renderProducts(products);
+      } else {
+        const filtered = products.filter(p => p.category === category);
+        renderProducts(filtered);
+      }
+    }
+
+    // Load lần đầu
+    renderProducts(products);
+
+    // Search realtime
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("input", function(){
+      const keyword = this.value.toLowerCase();
+      const filtered = products.filter(p => p.name.toLowerCase().includes(keyword));
+      renderProducts(filtered);
+    });
+  </script>
+
+  <!-- NÚT ZALO NỔI -->
+  <a href="https://zalo.me/0365459283"
+     target="_blank"
+     class="fixed bottom-5 right-5 bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 rounded-full shadow-lg font-bold">
+    📞 Zalo hỗ trợ
+  </a>
+
+</body>
+</html>
